@@ -68,18 +68,18 @@ while((size(a,1) ~= 0) && (size(b,1) ~= 0))
     figNum = j;
 end
 
-k = 1;
 for i = 1:size(grid.grid, 1)
     for j = 1:size(grid.grid, 2)
-        classified = false;
-        while(classified == false)
+        k = 1;
+        classified = 0;
+        while(classified == 0)
             classifier = G(:,:,k);
             if (classifier(i,j) == 2) && (naBArray(k) == 0)
                 classification = 2;
-                classified = true;
+                classified = 1;
             elseif (classifier(i,j) == 1) && (nbAArray(k) == 0)
                 classification = 1;
-                classified = true;
+                classified = 1;
             else
                 k = k + 1;
             end
