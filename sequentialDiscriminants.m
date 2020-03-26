@@ -2,17 +2,18 @@ clear all;
 close all;
 load('lab2_3.mat');
 
+% Initial Steps
 j = 1;
-
+% Bounds
 minX = min([min(a(:,1)), min(b(:,1))]);
 minY = min([min(a(:,2)), min(b(:,2))]);
 maxX = max([max(a(:,1)), max(b(:,1))]);
 maxY = max([max(a(:,2)), max(b(:,2))]);
 grid = gridMaker(minX, maxX, minY, maxY);
-
+% Data
 aData = a;
 bData = b;
-
+% Holder Matrices
 G = zeros(400);
 nbAArray = [];
 naBArray = [];
@@ -54,20 +55,12 @@ while((size(a,1) ~= 0) && (size(b,1) ~= 0))
         	end
         end
     end
-    figure(j)
-    hold on;
-    contour(grid.grid(:,:,1), grid.grid(:,:,2), disc);
-    scatter(a(:,1), a(:,2), 20, 'r','filled');
-    scatter(b(:,1), b(:,2), 20, 'g','filled');
-    scatter(randPA(1), randPA(2), 'black', 'filled');
-    scatter(randPB(1), randPB(2), 'black', 'filled');
-    hold off;
     a = newA;
     b = newB;
     j = j+1;
-    figNum = j;
 end
 
+% Classification
 for i = 1:size(grid.grid, 1)
     for j = 1:size(grid.grid, 2)
         k = 1;
@@ -88,14 +81,20 @@ for i = 1:size(grid.grid, 1)
     end
 end
 
-figure(figNum+1)
+figure(1)
 hold on;
-contour(grid.grid(:,:,1), grid.grid(:,:,2), grid.grid(:,:,4));
-scatter(aData(:,1), aData(:,2), 20, 'r','filled');
-scatter(bData(:,1), bData(:,2), 20, 'g','filled');
+colorRegion = [
+    1, 204/255, 204/255
+    204/255, 229/255, 1];
+colormap(colorRegion);
+contourf(grid.grid(:,:,1), grid.grid(:,:,2), grid.grid(:,:,4));
+a = scatter(aData(:,1), aData(:,2), 20, 'r','filled');
+b = scatter(bData(:,1), bData(:,2), 20, 'b','filled');
+xlabel('Feature 1');
+ylabel('Feature 2');
+title('Sequential Discriminant Classifier');
+legend([a b], {'Class A', 'Class B'})
 hold off;
-
-
 
 function [discriminant, naB, nbA, randPA, randPB]  = getDisc(a_data, b_data, grid)
     confMatrixMED1 = [1 1; 1 1];
